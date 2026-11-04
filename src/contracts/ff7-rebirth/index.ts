@@ -2,4 +2,4 @@
  * re-run `npm run gen-types` after `npm run sync-contracts`. */
 
 // The version views of this contract are written against; see scripts/gen-types.mjs.
-export type * from './1.2';
+export type * from './1.3';

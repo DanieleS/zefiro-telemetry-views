@@ -12,6 +12,7 @@
     "build": "node scripts/build.mjs",
     "test": "npm run build && playwright test",
     "check": "node scripts/sync-contracts.mjs --check && node scripts/gen-types.mjs --check && npm run typecheck && npm test",
+    "shots": "npm run build && playwright test -c playwright.shots.config.ts",
     "push": "npm run build && ./scripts/push.sh"
   },
   "dependencies": {

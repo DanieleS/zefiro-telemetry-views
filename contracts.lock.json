@@ -1,8 +1,8 @@
 {
   "source": {
     "repository": "scry-profiles",
-    "path": "../scry-profiles",
-    "commit": "051e2d6554c89487e04aa6d5f7bd6ebcdca34713"
+    "path": "../../../../../../tmp/sp",
+    "commit": "0ffacf5e8952c286c4c3ebd1ad9eca3fd08c2eb7"
   },
   "contracts": [
     "ff7-rebirth",
@@ -12,6 +12,7 @@
     "contracts/ff7-rebirth/1.0.schema.json": "83c508bc0124d8b001d33ce84337f490a9e112f7295357ed1264504623e5d0d7",
     "contracts/ff7-rebirth/1.1.schema.json": "880611799945b4e9106fcfe25a6172bffc6de7e119496c46bbf3659ef61b0191",
     "contracts/ff7-rebirth/1.2.schema.json": "6893d23a8799d4d8832d951700f86c6b058e770e33878a075ad2c755a182dffa",
+    "contracts/ff7-rebirth/1.3.schema.json": "cca0dd4c8b6873526892c852d6e1494ef3414db8f36dbeca47e80ccbc99e0d29",
     "contracts/sea-of-stars/2.0.schema.json": "5717ac2376fc3c93ec427d83f3623cb7537bbc5a5f8725f0fdb726b0b3079d91",
     "fixtures/ff7-rebirth/1.0/steam-battle.json": "0908c4fbbffc99d6133c185080ea8c380742082d6bbc93a24925e20334ac23b0",
     "fixtures/ff7-rebirth/1.1/steam-battle.json": "b053cb9ac7a82cae91bc3a2620602de4ce599a9f73b2460428fa08aa2727dc26",

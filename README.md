@@ -172,6 +172,22 @@ the built file at all. `VIEW=<name> npm run dev` serves another view.
 Keys: `1` title screen · `2` voyage · `3` battle · `d`/`h` hurt/heal Zale · `r` resync snapshot ·
 `x` detach · `s` stop the script · `p` restart it.
 
+### Seeing a view without a device: `npm run shots`
+
+`npm run shots` builds the views, then photographs each one in the screens listed for it in
+[`tests/shots.ts`](tests/shots.ts), at the panel's size (538x444 CSS px, at 2x). The PNGs land in
+`shots/<view>@<version>/`, which git ignores. Each shot loads the built file, feeds it a snapshot
+through `window.scry.onFrame` as the app does, waits for the screen's selector and for any scene
+transition to finish, and stops the animations, so two runs of the same values give the same
+picture. A page error fails the run.
+
+Add a shot when a view gains a screen or a state worth looking at: a name, the snapshot's `values`,
+optional `clicks`, and the selector that means the screen is up.
+
+Both this and `npm test` drive Playwright's Chromium by default. `PW_CHANNEL=msedge` (or `chrome`)
+drives an installed browser instead, and on Windows that is the default, so nothing has to be
+downloaded there.
+
 ## How the Sea of Stars view is put together
 
 | | |
