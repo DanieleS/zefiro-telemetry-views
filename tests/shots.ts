@@ -44,7 +44,7 @@ function volume(id: string, name: string, half: [number, number, number], scale 
   };
 }
 
-const WORLD = volume('0001-WORLD', 'None', [400000, 400000, 100000], 10);
+const WORLD = volume('0001-WORLD', 'None', [100, 100, 100]);
 const COREL = volume('2200-CORLA', '$map2100', [28111, 48888, 100000], 4);
 
 /** Cloud, Tifa and Aerith out in the field, the system menu closed. */

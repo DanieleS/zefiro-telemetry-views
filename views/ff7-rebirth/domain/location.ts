@@ -33,6 +33,12 @@ const MAPS: Record<string, MapMeta> = maps;
 /** The FName the game writes for "no name". */
 const NONE = 'None';
 
+/**
+ * The world map's own volume. Its brush is a token 200-unit cube although it covers the whole world,
+ * so its box says nothing about its size: it is the last resort, never the smallest.
+ */
+const WORLD = '0001-WORLD';
+
 export interface Place {
   /** The region the map belongs to, e.g. "Corel". Null when it has no name of its own. */
   region: string | null;
@@ -87,7 +93,7 @@ const volumes = computed<Volume[]>(() => {
     });
     const product = spans.every((span) => span !== null) ? spans.reduce((p, s) => p! * s!, 1)! : NaN;
     // An unreadable box, or one whose product is not a number (0 times infinity), sorts last.
-    const size = Number.isNaN(product) ? Infinity : product;
+    const size = Number.isNaN(product) || one.id === WORLD ? Infinity : product;
     out.push({ id: one.id, name: one.name ?? null, size });
   }
   // Not `a.size - b.size`: two infinite sizes would make that NaN, and the order undefined.

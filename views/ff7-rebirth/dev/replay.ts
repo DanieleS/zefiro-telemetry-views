@@ -86,7 +86,7 @@ function volume(id: string, name: string, half: [number, number, number], scale 
 
 /** The active location volumes on the coal mine's railway, as read in game. */
 const MINE: Location[] = [
-  volume('0001-WORLD', 'None', [400000, 400000, 100000], 10),
+  volume('0001-WORLD', 'None', [100, 100, 100]),
   volume('2200-CORLA', '$map2100', [28111, 48888, 100000], 4),
   volume('2250-CORLM', 'None', [5250, 2000, 5000]),
   volume('2250-CORLM', 'None', [2500, 2500, 5000]),
