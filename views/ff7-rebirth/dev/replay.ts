@@ -5,8 +5,10 @@
  * mid-battle, paused, with an enemy locked on. Everything after the first snapshot is invented,
  * because one tick cannot show a gauge filling.
  *
- * The capture is a 1.1 one, announced as 1.2: a minor only adds, so its values are a 1.2 picture
- * that lacks the newer watches, and the script supplies `battle_hud` itself.
+ * The capture is a 1.1 one, announced as 1.3: a minor only adds, so its values are a 1.3 picture
+ * that lacks the newer watches, and the script supplies `battle_hud`, the player's position and the
+ * location volumes itself. Those are the ones read in game on the Corel coal mine's railway, and the
+ * player walks a slow loop there so the map has something to follow.
  *
  * Excluded from the production build (see main.ts). A view has no business being able to make up
  * telemetry on a device.
@@ -48,7 +50,7 @@ function snapshot() {
     slug: 'Final Fantasy VII Rebirth',
     process: attached?.process ?? 'ff7rebirth_.exe',
     profile: attached?.profile ?? null,
-    contract: { id: attached?.contract?.id ?? manifest.contract.id, version: '1.2' },
+    contract: { id: attached?.contract?.id ?? manifest.contract.id, version: '1.3' },
     values: live,
   });
 }
@@ -56,6 +58,55 @@ function snapshot() {
 function diff(patch: Partial<Values>) {
   live = { ...live, ...patch };
   frame('diff', patch);
+}
+
+// --- where the player is ---------------------------------------------------------------------------
+
+type Location = NonNullable<NonNullable<Values['locations']>[number]>;
+
+/** A location volume as the profile reads it: a centred local box of these half-extents. */
+function volume(id: string, name: string, half: [number, number, number], scale = 1): Location {
+  const [x, y, z] = half;
+  return {
+    state: 1,
+    kind: 0,
+    id,
+    name,
+    min_x: -x,
+    min_y: -y,
+    min_z: -z,
+    max_x: x,
+    max_y: y,
+    max_z: z,
+    scale_x: scale,
+    scale_y: scale,
+    scale_z: scale,
+  };
+}
+
+/** The active location volumes on the coal mine's railway, as read in game. */
+const MINE: Location[] = [
+  volume('0001-WORLD', 'None', [100, 100, 100]),
+  volume('2200-CORLA', '$map2100', [28111, 48888, 100000], 4),
+  volume('2250-CORLM', 'None', [5250, 2000, 5000]),
+  volume('2250-CORLM', 'None', [2500, 2500, 5000]),
+  volume('2250-CORLM', '$area2250_Railway', [1250, 1500, 500]),
+];
+
+/** Where the walk loops, in world cm: the railway, a little north of the mine's bridge. */
+const WALK = { x: -7032, y: -41302, z: 3148, radius: 2500 };
+let step = 0;
+
+function walk() {
+  step += 1;
+  const angle = step / 40;
+  diff({
+    player: {
+      x: WALK.x + Math.cos(angle) * WALK.radius,
+      y: WALK.y + Math.sin(angle) * WALK.radius * 0.6,
+      z: WALK.z,
+    },
+  });
 }
 
 // --- small edits of the live picture -----------------------------------------------------------
@@ -100,7 +151,7 @@ function at(ms: number, action: () => void) {
 function run() {
   timeline.forEach(clearTimeout);
   timeline = [];
-  live = structuredClone(captured);
+  live = { ...structuredClone(captured), locations: MINE, player: { x: WALK.x, y: WALK.y, z: WALK.z } };
   title();
   snapshot();
 
@@ -137,6 +188,8 @@ function run() {
 }
 
 run();
+// The profile samples the position at 4 Hz.
+window.setInterval(walk, 250);
 
 // --- manual controls, for building a single screen without waiting for the script ----------------
 

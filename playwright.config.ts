@@ -31,13 +31,22 @@ const projects = loadViews(root).flatMap((view) =>
   })),
 );
 
+/**
+ * The browser to drive. Playwright's own Chromium by default; `PW_CHANNEL=msedge` (or `chrome`)
+ * drives an installed one instead, which is what works on a Windows machine with no Playwright
+ * browsers downloaded, and on Windows that is the default.
+ */
+export const channel = process.env.PW_CHANNEL || (process.platform === 'win32' ? 'msedge' : undefined);
+
 export default defineConfig({
   testDir: 'tests',
+  // Photographs, not checks: run by playwright.shots.config.ts (`npm run shots`).
+  testIgnore: 'shots.spec.ts',
   // A hang is one of the failures being tested for; this is the backstop behind the spec's own,
   // shorter, per-step deadline.
   timeout: 120_000,
   fullyParallel: true,
   reporter: process.env.CI ? 'list' : 'line',
-  use: { browserName: 'chromium', headless: true },
+  use: { browserName: 'chromium', channel, headless: true },
   projects,
 });

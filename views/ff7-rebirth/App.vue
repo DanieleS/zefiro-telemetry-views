@@ -33,4 +33,9 @@ import { meta } from './stream';
   display: flex;
   flex-direction: column;
 }
+
+/* The map runs to the panel's edges; the field scene pads its own lines. */
+.view[data-state='field'] {
+  padding: 0;
+}
 </style>
